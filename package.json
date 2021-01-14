@@ -11,19 +11,27 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.12.2",
+    "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/pwa": "^3.0.2",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.11.11",
+    "nuxt": "^2.14.6",
+    "vuetify": "^2.4.2"
   },
   "devDependencies": {
+    "@mdi/font": "^5.8.55",
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "babel-eslint": "^10.1.0",
+    "css-loader": "^5.0.1",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-nuxt": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.1.2"
+    "fibers": "^5.0.0",
+    "prettier": "^2.1.2",
+    "sass": "^1.32.2",
+    "sass-loader": "^10.1.1"
   }
 }

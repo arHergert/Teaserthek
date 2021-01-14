@@ -1,0 +1,13 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.formatOnSave": true,
+    "vetur.validation.template": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "eslint.validate": [
+        "vue",
+        "javascript"
+    ]
+    
+  }
