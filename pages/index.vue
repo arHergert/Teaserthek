@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <v-layout>
       <v-flex md9><VideoPlayer /></v-flex>
       <v-flex md3><ConfigTabs /> </v-flex>
