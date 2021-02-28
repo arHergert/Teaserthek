@@ -1,4 +1,5 @@
 import config from './config'
+const bodyParser = require('body-parser')
 const express = require('express')
 const mongoose = require('mongoose')
 // Create express instance
@@ -16,11 +17,9 @@ mongoose
   .then(() => console.log('MongoDB Cloud Cluster connected'))
   .catch(err => console.log(err))
 
-server.listen(config.serverPort, () => {
-  console.log(`REST API server listening on port ${config.serverPort}`)
-})
-
 // Middlewares
+// Bodyparser Middleware
+server.use(bodyParser.json())
 // Import API Routes
 server.use(movies)
 

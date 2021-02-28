@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-app v-show="isPlayerReady" class="player">
+      <div id="video-overlay"></div>
       <youtube
         ref="youtube"
         :video-id="videoId"
@@ -34,35 +35,31 @@ export default {
       playerVars: {
         autoplay: 1,
         controls: 1,
-        showInfo: 0
+        rel: 0,
+        fs: 0,
+        color: 'white',
+        allow: 'autoplay',
+        iv_load_policy: 3
       }
     }
   },
+  computed: {
+    player() {
+      return this.$refs.youtube.player
+    }
+  },
   methods: {
-    removeYoutubeUIElements() {
-      if (document.getElementsByClassName('ytp-show-cards-title').length > 0) {
-        console.log('--------- Title ist noch da!')
-        document.getElementsByClassName(
-          'ytp-show-cards-title'
-        )[0].style.display = 'none'
-      } else {
-        console.log('+++++++++ Es ist weg')
-      }
+    playerReady() {
+      this.isPlayerReady = true
+      this.player.playVideo()
     },
     playing() {
       console.log('Video plays!')
-      console.log(
-        'Title? ',
-        document.getElementsByClassName('ytp-show-cards-title')
-      )
+      console.log(this.player)
     },
     ended() {
       console.log('Video ended!')
-    },
-    playerReady() {
-      this.isPlayerReady = true
-      console.log('Player ready!', this.$refs.youtube.player)
-      this.removeYoutubeUIElements()
+      this.videoId = 'LdOM0x0XDMo'
     }
   }
 }
@@ -76,5 +73,14 @@ export default {
 
 .progress {
   margin: auto;
+}
+
+#video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8%;
+  background-color: black;
 }
 </style>

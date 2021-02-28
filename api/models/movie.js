@@ -13,7 +13,7 @@ const MovieSchema = new mongoose.Schema({
   },
   releaseDate: {
     type: Date,
-    default: null
+    default: new Date(2999, 0, 1)
   },
   genre: {
     type: [String],

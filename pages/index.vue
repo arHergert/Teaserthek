@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout>
-      <v-flex md9><VideoPlayer /></v-flex>
+      <v-flex md11><VideoPlayer /></v-flex>
       <v-flex md3><ConfigTabs /> </v-flex>
     </v-layout>
   </div>
