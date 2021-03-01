@@ -15,6 +15,6 @@ router.delete('/deletemovies/', movieController.deletemovies)
 /* GET all added movies */
 // Parameter:
 // filters: Array - If filters Array is null, get with default settings
-router.get('/getfilteredmovies/', movieController.getmovies)
+router.get('/getfilteredmovies/', movieController.getfilteredmovies)
 
 module.exports = router

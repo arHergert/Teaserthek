@@ -1,8 +1,16 @@
 <template>
   <v-container class="blue-grey darken-4 white--text filter-tab">
     <div class="tab-article">
-      <p>Genres</p>
+      <p class="text-h5">Genres</p>
       <div class="tab-article-chips">
+        <v-chip
+          class="tab-chip"
+          text-color="grey lighten-3"
+          :color="defaultChipColor(tabFilters.genres)"
+          @click="setDefaultChipValue(tabFilters.genres)"
+        >
+          Alle
+        </v-chip>
         <v-chip
           v-for="genre in tabFilters.genres"
           :key="genre.name"
@@ -16,7 +24,7 @@
       </div>
     </div>
     <div class="tab-article">
-      <p>Erscheinungsjahr</p>
+      <p class="text-h5">Erscheinungsjahr</p>
       <div class="tab-article-chips">
         <v-chip
           v-for="date in tabFilters.releaseDates"
@@ -31,8 +39,16 @@
       </div>
     </div>
     <div class="tab-article">
-      <p>Streaminganbieter</p>
+      <p class="text-h5">Streaminganbieter</p>
       <div class="tab-article-chips">
+        <v-chip
+          class="tab-chip"
+          text-color="grey lighten-3"
+          :color="defaultChipColor(tabFilters.streamingPlatforms)"
+          @click="setDefaultChipValue(tabFilters.streamingPlatforms)"
+        >
+          Alle
+        </v-chip>
         <v-chip
           v-for="platform in tabFilters.streamingPlatforms"
           :key="platform.name"
@@ -46,8 +62,16 @@
       </div>
     </div>
     <div class="tab-article">
-      <p>Bewertungsportale</p>
+      <p class="text-h5">Bewertungsportale</p>
       <div class="tab-article-chips">
+        <v-chip
+          class="tab-chip"
+          text-color="grey lighten-3"
+          :color="defaultChipColor(tabFilters.ratingPlatforms)"
+          @click="setDefaultChipValue(tabFilters.ratingPlatforms)"
+        >
+          Alle
+        </v-chip>
         <v-chip
           v-for="platform in tabFilters.ratingPlatforms"
           :key="platform.name"
@@ -61,7 +85,7 @@
       </div>
     </div>
     <div class="tab-article">
-      <p>Spoiler zulassen</p>
+      <p class="text-h5">Spoiler zulassen</p>
       <div class="tabl-article-slider">
         <v-slider
           v-model="tabFilters.blockSpoilers"
@@ -69,6 +93,7 @@
           :max="2"
           :min="0"
           step="1"
+          dark
           ticks="always"
           track-color="grey lighten-3"
           track-fill-color="#2e9663"
@@ -80,7 +105,7 @@
       </div>
     </div>
     <v-btn depressed x-large color="primary tab-btn" @click="applyFilters()">
-      Filter ändern
+      Update Playlist
     </v-btn>
   </v-container>
 </template>
@@ -91,26 +116,35 @@ export default {
     return {
       tabFilters: {
         genres: [
-          { name: 'Alle', active: true },
           { name: 'Drama', active: false },
           { name: 'Thriller', active: false },
           { name: 'Action', active: false },
-          { name: 'Sci-Fi', active: false },
+          { name: 'Science Fiction', active: false },
           { name: 'Fantasy', active: false },
-          { name: 'Romance', active: false },
+          { name: 'Liebesfilm', active: false },
           { name: 'Horror', active: false },
-          { name: 'Comedy', active: false }
+          { name: 'Abenteuer', active: false },
+          { name: 'Animation', active: false },
+          { name: 'Komödie', active: false },
+          { name: 'Dokumentarfilm', active: false },
+          { name: 'Krimi', active: false },
+          { name: 'Mistery', active: false },
+          { name: 'Familie', active: false },
+          { name: 'Western', active: false },
+          { name: 'Kriegsfilm', active: false },
+          { name: 'Musik', active: false },
+          { name: 'Historie', active: false }
         ],
         releaseDates: [
           { name: 'Kommende', active: true },
           { name: 'Schon erschienen', active: false }
         ],
         streamingPlatforms: [
-          { name: 'Alle', active: true },
-          { name: 'Netflix', active: false }
+          { name: 'Netflix', active: false },
+          { name: 'Amazon Prime Video', active: false }
         ],
         ratingPlatforms: [
-          { name: 'Alle', active: true },
+          { name: 'Letterboxd', active: false },
           { name: 'IMDb', active: false }
         ],
         blockSpoilers: 2 // 0: block all, 1: block few, 2: block nothing
@@ -124,6 +158,16 @@ export default {
     },
     changeChipStatus(filterName) {
       filterName.active = !filterName.active
+    },
+    defaultChipColor(filterArray) {
+      return filterArray.some(filter => filter.active === true)
+        ? 'grey darken-4'
+        : '#2e9663'
+    },
+    setDefaultChipValue(filterArray) {
+      filterArray.forEach(filter => {
+        filter.active = false
+      })
     },
     extractedFilterStrings() {
       const extractedFilters = { ...this.tabFilters }
@@ -170,33 +214,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$cta-color: #2e9663;
-
-.filter-tab {
-  padding: 2em 2.5em;
-  .tab-article {
-    margin: 0.5em 0 2em 0;
-
-    p {
-      margin-bottom: 1em;
-    }
-
-    .tab-chip {
-      margin-right: 3px;
-      margin-bottom: 4px;
-    }
-  }
-
-  .tab-btn {
-    background: linear-gradient(266.76deg, #46d254 1%, #24744e 99.45%);
-  }
-}
-
 .v-chip.v-size--default {
   height: 28px;
-}
-
-.v-slider__tick-label {
-  color: white !important;
 }
 </style>

@@ -55,7 +55,6 @@ export default {
     },
     playing() {
       console.log('Video plays!')
-      console.log(this.player)
     },
     ended() {
       console.log('Video ended!')

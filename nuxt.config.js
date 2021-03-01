@@ -1,11 +1,19 @@
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
+    htmlAttrs: {
+      lang: 'de'
+    },
     title: 'teaserthek',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'Auf teaserthek kannst du von zu Hause aus die neusten Trailer schauen, ohne zu wissen, was sich dahinter verbirgt! Genau so wie füher im Kino!'
+      }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -49,5 +57,10 @@ export default {
   build: {},
   server: {
     port: 8000
+  },
+
+  publicRuntimeConfig: {
+    TMDB_SEARCH_URL: 'https://api.themoviedb.org/3/',
+    TMDB_API_KEY: process.env.TMDB_API_KEY
   }
 }

@@ -15,13 +15,17 @@ const MovieSchema = new mongoose.Schema({
     type: Date,
     default: new Date(2999, 0, 1)
   },
-  genre: {
+  tmdb_id: {
+    type: Number,
+    default: 0
+  },
+  genres: {
     type: [String],
     default: []
   },
   language: {
     type: String,
-    default: 'english'
+    default: 'Englisch'
   },
   spoilerTimeStamp: {
     type: Number,
