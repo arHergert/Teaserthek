@@ -2,17 +2,18 @@
   <v-container class="blue-grey darken-4 white--text filter-tab">
     <div class="tab-article">
       <p class="text-h5">Filmtrailer hinzufügen</p>
-      <div>
+      <div class="form">
         <v-text-field
           v-model="movieName"
           dark
           :rules="[value => !!value || 'Darf nicht leer sein!']"
           label="Titel des Films *"
+          @keydown.enter="addTrailer()"
         ></v-text-field>
         <v-text-field
           v-model="videoUrl"
           dark
-          label="YouTube ID des Trailers"
+          label="Eigene YouTube ID des Trailers"
         ></v-text-field>
         <v-select
           v-model="videoLanguage"
@@ -22,6 +23,7 @@
           label="Sprache des Trailers"
         ></v-select>
         <v-text-field
+          v-if="videoUrl !== ''"
           v-model="spoilerTimeStamp"
           dark
           label="Beginn der Spoiler (z.B. '1:45')"
@@ -34,7 +36,12 @@
         color="primary tab-btn"
         @click="addTrailer()"
       >
-        <span v-if="disabledBtn === false">Neuen Trailer eintragen</span>
+        <span v-if="disabledBtn === false && videoUrl === ''">
+          Suchen und hinzufügen
+        </span>
+        <span v-else-if="disabledBtn === false && videoUrl !== ''">
+          Eigenen Trailer eintragen
+        </span>
         <span v-else>Wird eingetragen...</span>
       </v-btn>
     </div>
@@ -93,7 +100,8 @@ export default {
                   ? movieInfo.title
                   : this.movieName,
               videoUrl: this.videoUrl,
-              language: this.videoLanguage,
+              language:
+                this.videoLanguage !== '' ? this.videoLanguage : 'Deutsch',
               releaseDate: movieInfo.release_date,
               tmdb_id: movieInfo.id,
               spoilerTimeStamp: this.minutesToSeconds(this.spoilerTimeStamp),
@@ -122,7 +130,7 @@ export default {
         this.disabledBtn = false
       } else {
         this.$store.dispatch('openSnackbar', {
-          text: 'Bitte notwendige Felder befüllen!',
+          text: 'Filmtitel darf nicht leer sein!',
           type: 'warning'
         })
       }
@@ -130,11 +138,9 @@ export default {
     async getMovieByName() {
       let movieInfo = null
       const query = `${this.$config.TMDB_SEARCH_URL}search/movie?api_key=${this.$config.TMDB_API_KEY}&language=${this.tmdbLanguage}&query=${this.movieName}`
-      console.log('GET Movie Name: ', query)
       await this.$axios
         .$get(query)
         .then(res => {
-          console.log('Movie Name', res)
           if (res.results.length > 0) {
             movieInfo = res.results[0]
           }
@@ -145,11 +151,9 @@ export default {
     async getYoutubeId(movieId) {
       let youtubeId
       const query = `${this.$config.TMDB_SEARCH_URL}movie/${movieId}/videos?api_key=${this.$config.TMDB_API_KEY}&language=${this.tmdbLanguage}`
-      console.log('GET Movie Videos: ', query)
       await this.$axios
         .$get(query)
         .then(res => {
-          console.log('Movie Videos Res', res)
           if (res.results.length > 0) {
             youtubeId =
               res.results[0].site === 'YouTube' ? res.results[0].key : '0' // Only YT Ids are valid
@@ -164,4 +168,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.form {
+  margin: 2.5em 0;
+
+  .v-input {
+    margin-bottom: 15px;
+  }
+}
+</style>

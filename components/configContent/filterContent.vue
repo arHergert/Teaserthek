@@ -208,6 +208,8 @@ export default {
     applyFilters() {
       const newFilter = this.extractedFilterStrings()
       this.$store.commit('setActiveFilters', newFilter)
+      // Convert the object into a JSON string and store
+      window.localStorage.setItem('userMovieFilter', JSON.stringify(newFilter))
     }
   }
 }

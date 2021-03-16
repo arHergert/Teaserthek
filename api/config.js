@@ -8,6 +8,7 @@ export default {
     env.DB_USER +
     ':' +
     env.DB_PW +
-    '@trailerdb1.sb7wv.mongodb.net/movies?retryWrites=true&w=majority',
-  serverPort: env.PORT
+    '@' +
+    env.DB_TABLE +
+    '.sb7wv.mongodb.net/movies?retryWrites=true&w=majority'
 }

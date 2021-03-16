@@ -4,7 +4,7 @@ export default {
     htmlAttrs: {
       lang: 'de'
     },
-    title: 'teaserthek',
+    title: 'Teaserthek',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -12,7 +12,7 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'Auf teaserthek kannst du von zu Hause aus die neusten Trailer schauen, ohne zu wissen, was sich dahinter verbirgt! Genau so wie füher im Kino!'
+          'Auf Teaserthek kannst du von zu Hause aus die neusten Trailer schauen, ohne zu wissen, was sich dahinter verbirgt. Genau so wie füher im Kino!'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]

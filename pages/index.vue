@@ -8,16 +8,16 @@
       <v-snackbar
         right
         :height="350"
-        :timeout="this.$store.state.snackbarTimeout"
-        :value="this.$store.state.snackbarShow"
-        :color="this.$store.state.snackbarColor"
+        :timeout="this.$store.state.snackbar.timeout"
+        :value="this.$store.state.snackbar.show"
+        :color="this.$store.state.snackbar.color"
       >
         <div class="snackbar">
           <span class="snackbar-icon">
-            {{ this.$store.state.snackbarIcon }}
+            {{ this.$store.state.snackbar.icon }}
           </span>
           <span class="snackbar-text">
-            {{ this.$store.state.snackbarText }}
+            {{ this.$store.state.snackbar.text }}
           </span>
         </div>
       </v-snackbar>

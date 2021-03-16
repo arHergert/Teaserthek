@@ -1,5 +1,6 @@
 export const state = () => ({
   watchedTrailers: [],
+  videoPlaylist: [],
   activeFilters: {
     genres: [],
     releaseDates: [],
@@ -7,31 +8,50 @@ export const state = () => ({
     ratingPlatforms: [],
     blockSpoilers: 2 // 0: block all, 1: block few, 2: block nothing
   },
-  snackbarShow: false,
-  snackbarColor: 'success',
-  snackbarText: '',
-  snackbarIcon: '',
-  snackbarTimeout: 4000
+  snackbar: {
+    show: false,
+    color: 'success',
+    text: '',
+    icon: '',
+    timeout: 4000
+  },
+  videoControls: {
+    autoplay: true,
+    currentIndex: 0,
+    fullscreen: false
+  }
 })
 
 export const mutations = {
   setWatchedTrailers(state, watchedTrailers) {
     state.watchedTrailers = watchedTrailers
   },
+  setVideoPlaylist(state, playlist) {
+    state.videoPlaylist = playlist
+  },
   setActiveFilters(state, activeFilters) {
     state.activeFilters = activeFilters
   },
   setSnackbarShow(state, data) {
-    state.snackbarShow = data
+    state.snackbar.show = data
   },
   setSnackbarColor(state, data) {
-    state.snackbarColor = data
+    state.snackbar.color = data
   },
   setSnackbarText(state, data) {
-    state.snackbarText = data
+    state.snackbar.text = data
   },
   setSnackbarIcon(state, data) {
-    state.snackbarIcon = data
+    state.snackbar.icon = data
+  },
+  setCurrentVideoIndex(state, data) {
+    state.videoControls.currentIndex = data
+  },
+  setControlsAutoplay(state, data) {
+    state.videoControls.autoplay = data
+  },
+  setControlsFullscreen(state, data) {
+    state.videoControls.fullscreen = data
   }
 }
 
@@ -56,6 +76,6 @@ export const actions = {
     commit('setSnackbarShow', true)
     setTimeout(() => {
       commit('setSnackbarShow', false)
-    }, state.snackbarTimeout)
+    }, state.snackbar.timeout)
   }
 }

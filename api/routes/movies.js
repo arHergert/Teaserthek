@@ -12,9 +12,11 @@ router.get('/getmovies/', movieController.getmovies)
 /* DELETE all added movies */
 router.delete('/deletemovies/', movieController.deletemovies)
 
-/* GET all added movies */
-// Parameter:
+/* POST all added movies */
+// Query:
+// limit - How many traiers you want to fetch
+// Body:
 // filters: Array - If filters Array is null, get with default settings
-router.get('/getfilteredmovies/', movieController.getfilteredmovies)
+router.post('/getfilteredmovies/', movieController.getfilteredmovies)
 
 module.exports = router
