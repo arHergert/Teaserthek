@@ -1,4 +1,4 @@
-const pipe = require('../helper/filterPipelineMethods')
+const FilterPipeline = require('../helper/FilterPipeline')
 const Movie = require('../models/movie')
 
 exports.addmovie = (req, res) => {
@@ -37,19 +37,12 @@ exports.deletemovies = (req, res) => {
 exports.getfilteredmovies = (req, res) => {
   try {
     const limit = req.query.limit !== undefined ? parseInt(req.query.limit) : 25
-    const filters = req.body.filters
     Movie.find()
       .then(movies => {
-        // Create Filter Pipeline
-        pipe.filterByGenres(movies, filters.genres)
-        pipe.filterByDate(movies, filters.releaseDates)
-        pipe.filterByStreamingPlatforms(movies, filters.streamingPlatforms)
-        pipe.filterByRatingPlatforms(movies, filters.ratingPlatforms)
-        pipe.filterBySpoiler(movies, filters.blockSpoilers)
-        // Then shuffle placement in Array
-        movies = pipe.shuffleAndLimit(movies, limit)
-        // At last, send the filtered movie playlist
-        res.status(200).send(movies)
+        // Create Pipeline
+        const pipe = new FilterPipeline(movies, limit, req.body.filters)
+        // Send the filtered movie playlist
+        res.status(200).send(pipe.getFilteredMovies())
       })
       .catch(e => console.error(e))
   } catch (error) {

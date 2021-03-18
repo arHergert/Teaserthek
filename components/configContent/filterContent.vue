@@ -1,6 +1,7 @@
 <template>
   <v-container class="blue-grey darken-4 white--text filter-tab">
     <div class="tab-article">
+      <p class="text-h4">Filter</p>
       <p class="text-h5">Genres</p>
       <div class="tab-article-chips">
         <v-chip
@@ -24,7 +25,7 @@
       </div>
     </div>
     <div class="tab-article">
-      <p class="text-h5">Erscheinungsjahr</p>
+      <p class="text-h5">Erscheinungsdatum</p>
       <div class="tab-article-chips">
         <v-chip
           v-for="date in tabFilters.releaseDates"
@@ -62,30 +63,7 @@
       </div>
     </div>
     <div class="tab-article">
-      <p class="text-h5">Bewertungsportale</p>
-      <div class="tab-article-chips">
-        <v-chip
-          class="tab-chip"
-          text-color="grey lighten-3"
-          :color="defaultChipColor(tabFilters.ratingPlatforms)"
-          @click="setDefaultChipValue(tabFilters.ratingPlatforms)"
-        >
-          Alle
-        </v-chip>
-        <v-chip
-          v-for="platform in tabFilters.ratingPlatforms"
-          :key="platform.name"
-          class="tab-chip"
-          text-color="grey lighten-3"
-          :color="chipColor(platform)"
-          @click="changeChipStatus(platform)"
-        >
-          {{ platform.name }}
-        </v-chip>
-      </div>
-    </div>
-    <div class="tab-article">
-      <p class="text-h5">Spoiler zulassen</p>
+      <p class="text-h5">Spoiler zulassen?</p>
       <div class="tabl-article-slider">
         <v-slider
           v-model="tabFilters.blockSpoilers"
@@ -105,7 +83,7 @@
       </div>
     </div>
     <v-btn depressed x-large color="primary tab-btn" @click="applyFilters()">
-      Update Playlist
+      Playlist updaten
     </v-btn>
   </v-container>
 </template>
@@ -128,7 +106,7 @@ export default {
           { name: 'Komödie', active: false },
           { name: 'Dokumentarfilm', active: false },
           { name: 'Krimi', active: false },
-          { name: 'Mistery', active: false },
+          { name: 'Mystery', active: false },
           { name: 'Familie', active: false },
           { name: 'Western', active: false },
           { name: 'Kriegsfilm', active: false },
@@ -143,13 +121,14 @@ export default {
           { name: 'Netflix', active: false },
           { name: 'Amazon Prime Video', active: false }
         ],
-        ratingPlatforms: [
-          { name: 'Letterboxd', active: false },
-          { name: 'IMDb', active: false }
-        ],
         blockSpoilers: 2 // 0: block all, 1: block few, 2: block nothing
       },
       spoilerLabels: ['Keine', 'Leichte Spoiler', 'Alle Spoiler']
+    }
+  },
+  computed: {
+    activeFilters() {
+      return this.$store.state.activeFilters
     }
   },
   methods: {
@@ -182,9 +161,6 @@ export default {
       extractedFilters.streamingPlatforms = extractedFilters.streamingPlatforms.filter(
         platform => platform.active === true
       )
-      extractedFilters.ratingPlatforms = extractedFilters.ratingPlatforms.filter(
-        platform => platform.active === true
-      )
 
       // Use mapping to only include name
       extractedFilters.genres = extractedFilters.genres.map(
@@ -199,10 +175,6 @@ export default {
         filter => filter.name
       )
 
-      extractedFilters.ratingPlatforms = extractedFilters.ratingPlatforms.map(
-        filter => filter.name
-      )
-
       return extractedFilters
     },
     applyFilters() {
@@ -210,6 +182,31 @@ export default {
       this.$store.commit('setActiveFilters', newFilter)
       // Convert the object into a JSON string and store
       window.localStorage.setItem('userMovieFilter', JSON.stringify(newFilter))
+      this.updateTrailerPlaylist(25)
+    },
+    async updateTrailerPlaylist(limit) {
+      const filters = this.activeFilters
+      const query = '/getfilteredmovies?limit=' + limit
+      await this.$axios
+        .$post(query, {
+          filters
+        })
+        .then(res => {
+          // Update playlist and reset index
+          this.$store.commit('setCurrentVideoIndex', 0)
+          this.$store.commit('setVideoPlaylist', res)
+
+          // Show empty data status if playlist is empty
+          this.$store.commit('setFetchedVideosEmpty', !(res.length > 0))
+
+          if (res.length > 0) {
+            this.$store.dispatch('openSnackbar', {
+              text: 'Playlist wurde aktualisiert. Viel Spaß!',
+              type: 'success'
+            })
+          }
+        })
+        .catch(error => console.error(error))
     }
   }
 }
@@ -217,6 +214,6 @@ export default {
 
 <style lang="scss" scoped>
 .v-chip.v-size--default {
-  height: 28px;
+  height: 2rem;
 }
 </style>

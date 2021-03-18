@@ -1,7 +1,7 @@
 <template>
   <v-container class="blue-grey darken-4 white--text filter-tab">
     <div class="tab-article">
-      <p class="text-h5">Filmtrailer hinzufügen</p>
+      <p class="text-h4">Filmtrailer hinzufügen</p>
       <div class="form">
         <v-text-field
           v-model="movieName"
@@ -170,8 +170,6 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  margin: 2.5em 0;
-
   .v-input {
     margin-bottom: 15px;
   }

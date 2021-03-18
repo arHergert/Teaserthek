@@ -46,6 +46,8 @@ export default {
 }
 
 .snackbar {
+  display: flex;
+  justify-content: space-evenly;
   span {
     vertical-align: middle;
   }

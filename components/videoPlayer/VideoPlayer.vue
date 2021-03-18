@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-app v-if="trailersFetched" class="player">
+    <v-app
+      v-if="videoPlaylist.length > 0 && fetchedVideosEmpty == false"
+      class="player"
+    >
       <div id="title-overlay"></div>
       <div id="video-controls" :class="videoPaused ? 'paused' : ''">
         <VideoControlsUI />
@@ -18,7 +21,10 @@
         @ready="playerReady"
       ></youtube>
     </v-app>
-    <v-app v-else class="player">
+    <v-app
+      v-else-if="videoPlaylist.length === 0 && fetchedVideosEmpty == false"
+      class="player"
+    >
       <v-progress-circular
         :size="60"
         :width="6"
@@ -26,6 +32,13 @@
         indeterminate
         class="progress"
       ></v-progress-circular>
+    </v-app>
+    <v-app v-else class="empty-data">
+      <div class="empty-data-status">
+        <p><v-icon>mdi-filmstrip-off</v-icon></p>
+        <p>Leider konnten wir keine Trailer finden.</p>
+        <p>Bitte mit anderen Filtern neu laden.</p>
+      </div>
     </v-app>
   </div>
 </template>
@@ -36,7 +49,6 @@ export default {
   VideoControlsUI,
   data() {
     return {
-      trailersFetched: false,
       videoPaused: false,
       playerVars: {
         autoplay: 1,
@@ -58,21 +70,24 @@ export default {
     },
     videoPlaylist() {
       return this.$store.state.videoPlaylist
+    },
+    fetchedVideosEmpty() {
+      return this.$store.state.fetchedVideosEmpty
     }
   },
   async beforeMount() {
     // Check localstorage and get filter
     if (
       window.localStorage &&
-      window.localStorage.getItem('userMovieFilter') !== undefined
+      window.localStorage.getItem('userMovieFilter') !== null
     ) {
       await this.$store.commit(
         'setActiveFilters',
         JSON.parse(window.localStorage.getItem('userMovieFilter'))
       )
-
-      await this.fetchFilteredTrailerPlaylist(25)
     }
+
+    await this.fetchFilteredTrailerPlaylist(25)
   },
   mounted() {
     // Apply filter to filter tab
@@ -93,6 +108,15 @@ export default {
       ) {
         this.$store.commit('setCurrentVideoIndex', this.currentVideoIndex + 1)
       }
+
+      if (this.currentVideoIndex === this.videoPlaylist.length - 1) {
+        this.$store.dispatch('openSnackbar', {
+          text:
+            'Alle Trailer wurden abgespielt. Drücke "Playlist Updaten" für neue Videos!',
+          type: 'blue darken-2',
+          timeout: 6000
+        })
+      }
     },
     paused() {
       this.videoPaused = true
@@ -106,9 +130,11 @@ export default {
         })
         .then(res => {
           // If trailers were fetched, load youtube player with playlist
-          this.$store.commit('setVideoPlaylist', res)
           this.$store.commit('setCurrentVideoIndex', 0)
-          this.trailersFetched = true
+          this.$store.commit('setVideoPlaylist', res)
+
+          // Show empty data status if playlist is empty
+          this.$store.commit('setFetchedVideosEmpty', !(res.length > 0))
         })
         .catch(error => console.error(error))
     }
@@ -159,5 +185,27 @@ export default {
 .paused {
   opacity: 0.9 !important;
   transition: opacity 0s cubic-bezier(0, 0, 0.1, 0.1) !important;
+}
+
+$engraved-text-shadow: 0px 1px 0px #bbbbbb47, 0px -1px 0px rgb(0 0 0);
+$engraved-text-color: #131d23;
+
+.empty-data {
+  background-color: #283b44 !important;
+  &-status {
+    margin: auto;
+    color: $engraved-text-color;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 700;
+    font-size: 3rem;
+    text-shadow: $engraved-text-shadow;
+  }
+  .v-icon {
+    color: $engraved-text-color;
+    font-size: 15rem;
+    text-shadow: $engraved-text-shadow;
+  }
 }
 </style>

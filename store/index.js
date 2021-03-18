@@ -5,7 +5,6 @@ export const state = () => ({
     genres: [],
     releaseDates: [],
     streamingPlatforms: [],
-    ratingPlatforms: [],
     blockSpoilers: 2 // 0: block all, 1: block few, 2: block nothing
   },
   snackbar: {
@@ -19,7 +18,8 @@ export const state = () => ({
     autoplay: true,
     currentIndex: 0,
     fullscreen: false
-  }
+  },
+  fetchedVideosEmpty: false
 })
 
 export const mutations = {
@@ -44,6 +44,9 @@ export const mutations = {
   setSnackbarIcon(state, data) {
     state.snackbar.icon = data
   },
+  setSnackbarTimeout(state, data) {
+    state.snackbar.icon = data
+  },
   setCurrentVideoIndex(state, data) {
     state.videoControls.currentIndex = data
   },
@@ -52,11 +55,14 @@ export const mutations = {
   },
   setControlsFullscreen(state, data) {
     state.videoControls.fullscreen = data
+  },
+  setFetchedVideosEmpty(state, data) {
+    state.fetchedVideosEmpty = data
   }
 }
 
 export const actions = {
-  openSnackbar({ state, commit }, { text, type }) {
+  openSnackbar({ state, commit }, { text, type, timeout }) {
     switch (type) {
       case 'success':
         commit('setSnackbarIcon', '✔')
@@ -74,8 +80,13 @@ export const actions = {
     commit('setSnackbarColor', type)
     commit('setSnackbarText', text)
     commit('setSnackbarShow', true)
-    setTimeout(() => {
-      commit('setSnackbarShow', false)
-    }, state.snackbar.timeout)
+    setTimeout(
+      () => {
+        commit('setSnackbarShow', false)
+      },
+      timeout !== undefined && timeout !== null
+        ? timeout
+        : state.snackbar.timeout
+    )
   }
 }

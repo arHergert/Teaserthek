@@ -53,10 +53,16 @@ $cta-color: #2e9663;
     .tab-chip {
       margin-right: 3px;
       margin-bottom: 4px;
+      font-size: 1rem;
+    }
+
+    .text-h4 {
+      margin-bottom: 1.5em !important;
     }
   }
 
   .tab-btn {
+    margin-top: 2em;
     background: linear-gradient(266.76deg, #46d254 1%, #24744e 99.45%);
   }
 }

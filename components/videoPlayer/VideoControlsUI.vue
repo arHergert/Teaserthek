@@ -158,6 +158,10 @@ export default {
     .playlist-icon {
       cursor: initial;
     }
+
+    span {
+      white-space: nowrap;
+    }
   }
 
   .thumbs {
