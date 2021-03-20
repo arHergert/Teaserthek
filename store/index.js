@@ -3,7 +3,7 @@ export const state = () => ({
   videoPlaylist: [],
   activeFilters: {
     genres: [],
-    releaseDates: [],
+    releaseDates: ['Kommende'],
     streamingPlatforms: [],
     blockSpoilers: 2 // 0: block all, 1: block few, 2: block nothing
   },
@@ -17,7 +17,8 @@ export const state = () => ({
   videoControls: {
     autoplay: true,
     currentIndex: 0,
-    fullscreen: false
+    fullscreen: false,
+    configTabsOpen: true
   },
   fetchedVideosEmpty: false
 })
@@ -45,7 +46,7 @@ export const mutations = {
     state.snackbar.icon = data
   },
   setSnackbarTimeout(state, data) {
-    state.snackbar.icon = data
+    state.snackbar.timeout = data
   },
   setCurrentVideoIndex(state, data) {
     state.videoControls.currentIndex = data
@@ -55,6 +56,9 @@ export const mutations = {
   },
   setControlsFullscreen(state, data) {
     state.videoControls.fullscreen = data
+  },
+  setConfigTabsOpen(state, data) {
+    state.videoControls.configTabsOpen = data
   },
   setFetchedVideosEmpty(state, data) {
     state.fetchedVideosEmpty = data

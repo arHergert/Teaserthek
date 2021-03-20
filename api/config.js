@@ -9,6 +9,6 @@ export default {
     ':' +
     env.DB_PW +
     '@' +
-    env.DB_TABLE +
+    env.DB_COLLECTION +
     '.sb7wv.mongodb.net/movies?retryWrites=true&w=majority'
 }

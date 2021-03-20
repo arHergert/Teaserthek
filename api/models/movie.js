@@ -30,14 +30,6 @@ const MovieSchema = new mongoose.Schema({
   spoilerTimeStamp: {
     type: Number,
     default: -1
-  },
-  streamingPlatforms: {
-    type: [String],
-    default: []
-  },
-  ratingPlatforms: {
-    type: [String],
-    default: []
   }
 })
 

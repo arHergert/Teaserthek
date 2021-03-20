@@ -36,7 +36,7 @@
     <v-app v-else class="empty-data">
       <div class="empty-data-status">
         <p><v-icon>mdi-filmstrip-off</v-icon></p>
-        <p>Leider konnten wir keine Trailer finden.</p>
+        <p>Leider wurden keine Trailer gefunden.</p>
         <p>Bitte mit anderen Filtern neu laden.</p>
       </div>
     </v-app>
@@ -88,9 +88,6 @@ export default {
     }
 
     await this.fetchFilteredTrailerPlaylist(25)
-  },
-  mounted() {
-    // Apply filter to filter tab
   },
   methods: {
     playerReady() {
@@ -146,6 +143,13 @@ export default {
 .player {
   background-color: black;
   margin: auto;
+
+  &:hover {
+    #video-controls {
+      opacity: 0.9;
+      transition: opacity 0.2s cubic-bezier(0, 0, 0.1, 0.1);
+    }
+  }
 }
 
 .progress {
@@ -163,23 +167,18 @@ export default {
 
 #video-controls {
   position: absolute;
-  bottom: 76px;
-  left: 25vw;
+  bottom: 100px;
+  left: 22vw;
   right: 0;
   background: rgba(23, 23, 23);
-  padding: 8px 20px;
-  width: 30vw;
-  height: 80px;
+  padding: 8px 10px;
+  width: 34vw;
+  height: 100px;
   z-index: 50;
   border-radius: 5px;
   border: 1px solid #232323;
   opacity: 0;
   transition: opacity 0.2s cubic-bezier(0, 0, 0.1, 0.1);
-
-  &:hover {
-    opacity: 0.9;
-    transition: opacity 0.2s cubic-bezier(0, 0, 0.1, 0.1);
-  }
 }
 
 .paused {

@@ -37,34 +37,77 @@
         >
           {{ date.name }}
         </v-chip>
+        <v-row align="center" class="text-divider">
+          <v-divider dark></v-divider>
+          <span class="lightgrey-color">oder</span>
+          <v-divider dark></v-divider>
+        </v-row>
+        <v-chip
+          class="tab-chip"
+          text-color="grey lighten-3"
+          :color="timespanActive ? '#2e9663' : 'grey darken-4'"
+          @click="changeTimespanStatus()"
+        >
+          Eigener Zeitraum
+        </v-chip>
       </div>
-    </div>
-    <div class="tab-article">
-      <p class="text-h5">Streaminganbieter</p>
-      <div class="tab-article-chips">
-        <v-chip
-          class="tab-chip"
-          text-color="grey lighten-3"
-          :color="defaultChipColor(tabFilters.streamingPlatforms)"
-          @click="setDefaultChipValue(tabFilters.streamingPlatforms)"
+      <div v-if="timespanActive">
+        <v-menu
+          ref="menu"
+          v-model="menuStart"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
         >
-          Alle
-        </v-chip>
-        <v-chip
-          v-for="platform in tabFilters.streamingPlatforms"
-          :key="platform.name"
-          class="tab-chip"
-          text-color="grey lighten-3"
-          :color="chipColor(platform)"
-          @click="changeChipStatus(platform)"
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="timespan[0].start"
+              dark
+              label="Start"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            ref="picker"
+            v-model="timespan[0].start"
+            :max="new Date().toISOString().substr(0, 10)"
+            min="1950-01-01"
+          ></v-date-picker>
+        </v-menu>
+        <v-menu
+          ref="menu"
+          v-model="menuEnd"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
         >
-          {{ platform.name }}
-        </v-chip>
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="timespan[0].end"
+              dark
+              label="Ende"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            ref="picker"
+            v-model="timespan[0].end"
+            :min="timespan[0].start"
+          ></v-date-picker>
+        </v-menu>
       </div>
     </div>
     <div class="tab-article">
       <p class="text-h5">Spoiler zulassen?</p>
-      <div class="tabl-article-slider">
+      <div class="tab-article-slider">
         <v-slider
           v-model="tabFilters.blockSpoilers"
           :tick-labels="spoilerLabels"
@@ -117,13 +160,13 @@ export default {
           { name: 'Kommende', active: true },
           { name: 'Schon erschienen', active: false }
         ],
-        streamingPlatforms: [
-          { name: 'Netflix', active: false },
-          { name: 'Amazon Prime Video', active: false }
-        ],
         blockSpoilers: 2 // 0: block all, 1: block few, 2: block nothing
       },
-      spoilerLabels: ['Keine', 'Leichte Spoiler', 'Alle Spoiler']
+      spoilerLabels: ['Keine', 'Mit Spoilerwarnung', 'Zulassen'],
+      timespanActive: false,
+      timespan: [{ start: null, end: null }],
+      menuStart: false,
+      menuEnd: false
     }
   },
   computed: {
@@ -131,12 +174,50 @@ export default {
       return this.$store.state.activeFilters
     }
   },
+  watch: {
+    menuStart(val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    menuEnd(val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+    }
+  },
+  beforeMount() {
+    // Check localstorage and get filter
+    if (
+      window.localStorage &&
+      window.localStorage.getItem('userMovieFilter') !== null
+    ) {
+      this.applyFilterToTab(
+        JSON.parse(window.localStorage.getItem('userMovieFilter'))
+      )
+    }
+  },
   methods: {
     chipColor(filterName) {
       return filterName.active === true ? '#2e9663' : 'grey darken-4'
     },
-    changeChipStatus(filterName) {
-      filterName.active = !filterName.active
+    changeChipStatus(filter) {
+      if (filter.name === 'Kommende' || filter.name === 'Schon erschienen') {
+        this.timespanActive = false
+
+        if (
+          !filter.active ||
+          (filter.active &&
+            this.tabFilters.releaseDates.every(date => date.active === true))
+        ) {
+          filter.active = !filter.active
+        }
+      } else {
+        filter.active = !filter.active
+      }
+    },
+    changeTimespanStatus() {
+      this.timespanActive = true
+      this.tabFilters.releaseDates = [
+        { name: 'Kommende', active: false },
+        { name: 'Schon erschienen', active: false }
+      ]
     },
     defaultChipColor(filterArray) {
       return filterArray.some(filter => filter.active === true)
@@ -158,31 +239,77 @@ export default {
       extractedFilters.releaseDates = extractedFilters.releaseDates.filter(
         date => date.active === true
       )
-      extractedFilters.streamingPlatforms = extractedFilters.streamingPlatforms.filter(
-        platform => platform.active === true
-      )
 
       // Use mapping to only include name
       extractedFilters.genres = extractedFilters.genres.map(
         filter => filter.name
       )
 
-      extractedFilters.releaseDates = extractedFilters.releaseDates.map(
-        filter => filter.name
-      )
-
-      extractedFilters.streamingPlatforms = extractedFilters.streamingPlatforms.map(
-        filter => filter.name
-      )
+      if (extractedFilters.releaseDates.length === 0) {
+        // Add timespan to filter array
+        extractedFilters.releaseDates = this.timespan
+      } else {
+        extractedFilters.releaseDates = extractedFilters.releaseDates.map(
+          filter => filter.name
+        )
+      }
 
       return extractedFilters
     },
+    applyFilterToTab(filters) {
+      // Iterate over genres
+      this.tabFilters.genres.forEach(genre => {
+        if (filters.genres.includes(genre.name)) {
+          genre.active = true
+        }
+      })
+
+      // Get date values
+      if (filters.releaseDates[0].start !== undefined) {
+        this.changeTimespanStatus()
+        this.timespan[0].start = filters.releaseDates[0].start
+        this.timespan[0].end = filters.releaseDates[0].end
+      } else {
+        this.tabFilters.releaseDates = [
+          { name: 'Kommende', active: false },
+          { name: 'Schon erschienen', active: false }
+        ]
+        this.tabFilters.releaseDates.forEach(date => {
+          if (filters.releaseDates.includes(date.name)) {
+            date.active = true
+          }
+        })
+      }
+
+      // Get spoiler value
+      this.tabFilters.blockSpoilers = filters.blockSpoilers
+    },
     applyFilters() {
-      const newFilter = this.extractedFilterStrings()
-      this.$store.commit('setActiveFilters', newFilter)
-      // Convert the object into a JSON string and store
-      window.localStorage.setItem('userMovieFilter', JSON.stringify(newFilter))
-      this.updateTrailerPlaylist(25)
+      if (
+        !this.timespanActive ||
+        (this.timespan[0].start !== null && this.timespan[0].end !== null)
+      ) {
+        if (new Date(this.timespan[0].start) > new Date(this.timespan[0].end)) {
+          this.$store.dispatch('openSnackbar', {
+            text: 'Enddatum darf nicht vor Startdatum liegen!',
+            type: 'warning'
+          })
+          return
+        }
+        const newFilter = this.extractedFilterStrings()
+        this.$store.commit('setActiveFilters', newFilter)
+        // Convert the object into a JSON string and store
+        window.localStorage.setItem(
+          'userMovieFilter',
+          JSON.stringify(newFilter)
+        )
+        this.updateTrailerPlaylist(25)
+      } else {
+        this.$store.dispatch('openSnackbar', {
+          text: 'Start- und Enddatum müssen angegeben sein!',
+          type: 'warning'
+        })
+      }
     },
     async updateTrailerPlaylist(limit) {
       const filters = this.activeFilters
@@ -215,5 +342,9 @@ export default {
 <style lang="scss" scoped>
 .v-chip.v-size--default {
   height: 2rem;
+}
+
+.text-divider {
+  margin: 5px;
 }
 </style>

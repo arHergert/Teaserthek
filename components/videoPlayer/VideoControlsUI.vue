@@ -1,12 +1,5 @@
 <template>
   <div class="control-ui">
-    <div class="playlist-section vertical-center" dark>
-      <v-icon class="playlist-icon" dark>mdi-playlist-play</v-icon>
-      <span dark>
-        {{ currentVideoIndex + 1 }} / {{ videoPlaylist.length }}
-      </span>
-    </div>
-
     <div class="video-controls-section vertical-center hover-highlight">
       <v-tooltip top open-delay="1000">
         <template v-slot:activator="{ on, attrs }">
@@ -58,6 +51,13 @@
       </template>
       <span>Autoplay: {{ videoControls.autoplay ? 'On' : 'Off' }} </span>
     </v-tooltip>
+
+    <div class="playlist-section vertical-center" dark>
+      <v-icon class="playlist-icon" dark>mdi-playlist-play</v-icon>
+      <span dark>
+        {{ currentVideoIndex + 1 }} / {{ videoPlaylist.length }}
+      </span>
+    </div>
 
     <v-tooltip top open-delay="1000">
       <template v-slot:activator="{ on, attrs }">
@@ -142,13 +142,14 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
+  justify-content: space-between;
 
   span {
     color: #ebedeb;
   }
 
   .v-icon {
-    font-size: 2.5vw;
+    font-size: 3vw;
     color: rgba(255, 255, 255, 0.5);
     padding: 0 5px;
     cursor: pointer;
@@ -170,8 +171,6 @@ export default {
 }
 
 .video-controls-section {
-  padding: 0 1vw 0 1.7vw;
-
   .v-icon {
     padding: 0;
   }

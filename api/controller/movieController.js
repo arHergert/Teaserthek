@@ -12,9 +12,7 @@ exports.addmovie = (req, res) => {
     genres: req.body.genres,
     language: req.body.language,
     tmdb_id: req.body.tmdb_id,
-    spoilerTimeStamp: req.body.spoilerTimeStamp,
-    streamingPlatforms: req.body.streamingPlatforms,
-    ratingPlatforms: req.body.ratingPlatforms
+    spoilerTimeStamp: req.body.spoilerTimeStamp
   })
   newMovie
     .save()

@@ -1,5 +1,4 @@
 import config from './config'
-const bodyParser = require('body-parser')
 const express = require('express')
 const logger = require('morgan')
 const mongoose = require('mongoose')
@@ -35,7 +34,7 @@ connectWithRetry()
 server.use(logger('dev'))
 
 // Bodyparser Middleware
-server.use(bodyParser.json())
+server.use(express.json())
 
 // Import API Routes
 server.use(movies)

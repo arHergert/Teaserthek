@@ -8,17 +8,9 @@ class FilterPipeline {
   getFilteredMovies() {
     this.filterByGenres()
     this.filterByDate()
-    this.filterByStreamingPlatforms()
     this.filterBySpoiler()
     this.shuffleAndLimit()
     return this.filteredMovies
-    /* pipe.filterByGenres(movies, filters.genres)
-    pipe.filterByDate(movies, filters.releaseDates)
-    pipe.filterByStreamingPlatforms(movies, filters.streamingPlatforms)
-    pipe.filterByRatingPlatforms(movies, filters.ratingPlatforms)
-    pipe.filterBySpoiler(movies, filters.blockSpoilers)
-    // Then shuffle placement in Array
-    movies = pipe.shuffleAndLimit(movies, limit) */
   }
 
   filterByGenres() {
@@ -33,12 +25,40 @@ class FilterPipeline {
   }
 
   filterByDate() {
-    console.log('Nach Filterung Genre: ', this.filteredMovies.length)
+    if (this.filters.releaseDates[0].start !== undefined) {
+      this.filteredMovies = this.filteredMovies.filter(movie => {
+        return (
+          movie.releaseDate >= new Date(this.filters.releaseDates[0].start) &&
+          movie.releaseDate <= new Date(this.filters.releaseDates[0].end)
+        )
+      })
+    } else if (
+      this.filters.releaseDates.length === 1 &&
+      this.filters.releaseDates.includes('Kommende')
+    ) {
+      this.filteredMovies = this.filteredMovies.filter(
+        movie => movie.releaseDate >= new Date()
+      )
+    } else if (
+      this.filters.releaseDates.length === 1 &&
+      this.filters.releaseDates.includes('Schon erschienen')
+    ) {
+      this.filteredMovies = this.filteredMovies.filter(
+        movie => movie.releaseDate <= new Date()
+      )
+    }
   }
 
-  filterByStreamingPlatforms() {}
+  filterBySpoiler() {
+    // If no Spoilers are allowed, remove all trailers with spoiler timestamps
 
-  filterBySpoiler() {}
+    // eslint-disable-next-line eqeqeq
+    if (this.filters.blockSpoilers == 0) {
+      this.filteredMovies = this.filteredMovies.filter(movie => {
+        return movie.spoilerTimeStamp !== -1
+      })
+    }
+  }
 
   shuffleAndLimit() {
     for (let i = 0; i < this.filteredMovies.length - 1; i++) {

@@ -6,8 +6,8 @@
       background-color="blue-grey darken-3"
       class="blue-grey darken-4"
     >
-      <v-tab><v-icon>mdi-filter</v-icon></v-tab>
-      <v-tab><v-icon>mdi-information</v-icon></v-tab>
+      <v-tab><v-icon>mdi-tune-vertical-variant</v-icon></v-tab>
+      <v-tab><v-icon>mdi-information-outline</v-icon></v-tab>
       <v-tab><v-icon>mdi-history</v-icon></v-tab>
       <v-tab><v-icon>mdi-playlist-plus</v-icon></v-tab>
 
@@ -65,6 +65,10 @@ $cta-color: #2e9663;
     margin-top: 2em;
     background: linear-gradient(266.76deg, #46d254 1%, #24744e 99.45%);
   }
+}
+
+.lightgrey-color {
+  color: #cfd8dc;
 }
 
 .theme--light.v-tabs-items,
