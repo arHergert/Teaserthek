@@ -6,10 +6,42 @@
       background-color="blue-grey darken-3"
       class="blue-grey darken-4"
     >
-      <v-tab><v-icon>mdi-tune-vertical-variant</v-icon></v-tab>
-      <v-tab><v-icon>mdi-information-outline</v-icon></v-tab>
-      <v-tab><v-icon>mdi-history</v-icon></v-tab>
-      <v-tab><v-icon>mdi-playlist-plus</v-icon></v-tab>
+      <v-tooltip bottom open-delay="500">
+        <template v-slot:activator="{ on, attrs }">
+          <v-tab>
+            <v-icon v-bind="attrs" dark v-on="on"
+              >mdi-tune-vertical-variant</v-icon
+            >
+          </v-tab>
+        </template>
+        <span> Filter</span>
+      </v-tooltip>
+      <v-tooltip bottom open-delay="500">
+        <template v-slot:activator="{ on, attrs }">
+          <v-tab>
+            <v-icon v-bind="attrs" dark v-on="on"
+              >mdi-information-outline</v-icon
+            >
+          </v-tab>
+        </template>
+        <span> Filminfo</span>
+      </v-tooltip>
+      <v-tooltip bottom open-delay="500">
+        <template v-slot:activator="{ on, attrs }">
+          <v-tab>
+            <v-icon v-bind="attrs" dark v-on="on">mdi-history</v-icon>
+          </v-tab>
+        </template>
+        <span> Verlauf</span>
+      </v-tooltip>
+      <v-tooltip bottom open-delay="500">
+        <template v-slot:activator="{ on, attrs }">
+          <v-tab>
+            <v-icon v-bind="attrs" dark v-on="on">mdi-playlist-plus</v-icon>
+          </v-tab>
+        </template>
+        <span> Trailer hinzufügen</span>
+      </v-tooltip>
 
       <v-tab-item><FilterContent /></v-tab-item>
       <v-tab-item><InfoContent /></v-tab-item>
@@ -44,6 +76,10 @@ $cta-color: #2e9663;
   padding: 2em 2.5em;
   .tab-article {
     margin: 0.5em 0 2.5em 0;
+
+    .reverse-margin {
+      margin: 2.5em 0 0.5em 0;
+    }
 
     p {
       margin-bottom: 0.5em;

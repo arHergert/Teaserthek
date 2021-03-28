@@ -1,7 +1,5 @@
 <template>
-  <v-container class="blue-grey darken-4 white--text filter-tab">
-    <div class="tab-article"><p class="text-h4">Verlauf</p></div>
-  </v-container>
+  <v-container class="blue-grey darken-4 white--text filter-tab"> </v-container>
 </template>
 
 <script>

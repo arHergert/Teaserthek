@@ -61,6 +61,8 @@ export default {
 
   publicRuntimeConfig: {
     TMDB_SEARCH_URL: 'https://api.themoviedb.org/3/',
-    TMDB_API_KEY: process.env.TMDB_API_KEY
+    TMDB_API_KEY: process.env.TMDB_API_KEY,
+    LETTERBOXD_URL: 'https://letterboxd.com/film/',
+    IMDB_URL: 'https://www.imdb.com/title/'
   }
 }

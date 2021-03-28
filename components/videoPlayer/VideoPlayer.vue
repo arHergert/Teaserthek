@@ -99,13 +99,6 @@ export default {
       }, 50)
     },
     ended() {
-      if (
-        this.$store.state.videoControls.autoplay &&
-        this.currentVideoIndex < this.videoPlaylist.length - 1
-      ) {
-        this.$store.commit('setCurrentVideoIndex', this.currentVideoIndex + 1)
-      }
-
       if (this.currentVideoIndex === this.videoPlaylist.length - 1) {
         this.$store.dispatch('openSnackbar', {
           text:
@@ -113,6 +106,13 @@ export default {
           type: 'blue darken-2',
           timeout: 6000
         })
+      }
+
+      if (
+        this.$store.state.videoControls.autoplay &&
+        this.currentVideoIndex < this.videoPlaylist.length - 1
+      ) {
+        this.$store.commit('setCurrentVideoIndex', this.currentVideoIndex + 1)
       }
     },
     paused() {
@@ -167,8 +167,8 @@ export default {
 
 #video-controls {
   position: absolute;
-  bottom: 100px;
-  left: 22vw;
+  bottom: 225px;
+  left: 21.5vw;
   right: 0;
   background: rgba(23, 23, 23);
   padding: 8px 10px;
@@ -186,7 +186,7 @@ export default {
   transition: opacity 0s cubic-bezier(0, 0, 0.1, 0.1) !important;
 }
 
-$engraved-text-shadow: 0px 1px 0px #bbbbbb47, 0px -1px 0px rgb(0 0 0);
+$engraved-text-shadow: 0px 1px 0px rgb(187 187 187 / 10%), 0px -1px 0px black;
 $engraved-text-color: #131d23;
 
 .empty-data {

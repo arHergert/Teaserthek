@@ -1,7 +1,6 @@
 <template>
   <v-container class="blue-grey darken-4 white--text filter-tab">
     <div class="tab-article">
-      <p class="text-h4">Filmtrailer hinzufügen</p>
       <div class="form">
         <v-text-field
           v-model="movieName"
@@ -70,10 +69,7 @@ export default {
     async addTrailer() {
       if (this.movieName !== '') {
         this.disabledBtn = true
-        this.tmdbLanguage =
-          this.videoLanguage === 'Deutsch' || this.videoLanguage === ''
-            ? 'de'
-            : 'en-Us'
+        this.tmdbLanguage = this.videoLanguage === 'Englisch' ? 'en-Us' : 'de'
         let movieInfo = null
         movieInfo = await this.getMovieByName()
         console.log('Movie Lengths', movieInfo !== null)

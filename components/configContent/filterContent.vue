@@ -1,7 +1,6 @@
 <template>
   <v-container class="blue-grey darken-4 white--text filter-tab">
     <div class="tab-article">
-      <p class="text-h4">Filter</p>
       <p class="text-h5">Genres</p>
       <div class="tab-article-chips">
         <v-chip
