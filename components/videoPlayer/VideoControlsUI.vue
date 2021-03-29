@@ -109,6 +109,12 @@ export default {
         'setControlsFullscreen',
         !this.videoControls.fullscreen
       )
+
+      if (this.videoControls.fullscreen) {
+        document.getElementById('teaserthek').requestFullscreen()
+      } else {
+        document.exitFullscreen()
+      }
     },
     nextVideo() {
       if (this.currentVideoIndex < this.videoPlaylist.length - 1) {

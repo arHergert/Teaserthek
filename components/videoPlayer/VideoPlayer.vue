@@ -1,9 +1,18 @@
 <template>
-  <div>
+  <div
+    :class="
+      !this.$store.state.videoControls.fullscreen
+        ? 'not-fullscreen'
+        : 'fullscreen'
+    "
+  >
     <v-app
       v-if="videoPlaylist.length > 0 && fetchedVideosEmpty == false"
       class="player"
     >
+      <div v-if="!tabsOpen" class="resize-activator" @click="openTabsWindow()">
+        <v-icon>mdi-menu-left</v-icon>
+      </div>
       <div id="title-overlay"></div>
       <div id="video-controls" :class="videoPaused ? 'paused' : ''">
         <VideoControlsUI />
@@ -73,6 +82,9 @@ export default {
     },
     fetchedVideosEmpty() {
       return this.$store.state.fetchedVideosEmpty
+    },
+    tabsOpen() {
+      return this.$store.state.videoControls.configTabsOpen
     }
   },
   async beforeMount() {
@@ -134,6 +146,9 @@ export default {
           this.$store.commit('setFetchedVideosEmpty', !(res.length > 0))
         })
         .catch(error => console.error(error))
+    },
+    openTabsWindow() {
+      this.$store.commit('setConfigTabsOpen', true)
     }
   }
 }
@@ -143,12 +158,21 @@ export default {
 .player {
   background-color: black;
   margin: auto;
+}
 
-  &:hover {
+.not-fullscreen {
+  .player:hover {
     #video-controls {
       opacity: 0.9;
       transition: opacity 0.2s cubic-bezier(0, 0, 0.1, 0.1);
     }
+  }
+}
+
+.fullscreen {
+  #video-controls:hover {
+    opacity: 0.9;
+    transition: opacity 0.2s cubic-bezier(0, 0, 0.1, 0.1);
   }
 }
 
@@ -168,7 +192,7 @@ export default {
 #video-controls {
   position: absolute;
   bottom: 225px;
-  left: 21.5vw;
+  left: 30%;
   right: 0;
   background: rgba(23, 23, 23);
   padding: 8px 10px;
@@ -205,6 +229,29 @@ $engraved-text-color: #131d23;
     color: $engraved-text-color;
     font-size: 15rem;
     text-shadow: $engraved-text-shadow;
+  }
+}
+
+.resize-activator {
+  height: 100%;
+  width: 50px;
+  z-index: 1;
+  right: 0;
+  opacity: 0;
+  background-color: #263238;
+  position: absolute;
+  display: flex;
+  cursor: pointer;
+
+  &:hover {
+    transition: opacity 0.1s cubic-bezier(0, 0, 0.1, 0.1);
+    opacity: 0.5;
+  }
+
+  .v-icon {
+    margin: auto -1px;
+    font-size: 3rem;
+    color: white;
   }
 }
 </style>

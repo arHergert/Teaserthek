@@ -1,9 +1,15 @@
 <template>
-  <div>
+  <div id="teaserthek">
     <v-app>
       <v-layout>
-        <v-flex md11><VideoPlayer /></v-flex>
-        <v-flex md3><ConfigTabs /> </v-flex>
+        <v-flex :class="tabsOpen ? 'md11' : 'md12'"><VideoPlayer /></v-flex>
+        <v-flex
+          v-if="tabsOpen"
+          md3
+          class="config-tabs"
+          :class="startIdle ? 'start' : ''"
+          ><ConfigTabs @click.native="userInteraction()" />
+        </v-flex>
       </v-layout>
       <v-snackbar
         right
@@ -33,13 +39,58 @@ export default {
   ConfigTabs,
   VideoPlayer,
   data() {
-    return {}
+    return {
+      tabsWereChecked: false,
+      startIdle: true
+    }
   },
-  methods: {}
+  computed: {
+    tabsOpen() {
+      return this.$store.state.videoControls.configTabsOpen
+    }
+  },
+  mounted() {
+    // Check 10 seconds after start if mouse is over tabs and hide tabs if not
+    setTimeout(this.setTabsIdle, 3000)
+  },
+  methods: {
+    getCurrentTime() {
+      return Math.round(new Date().getTime() / 1000)
+    },
+    setTabsIdle() {
+      this.startIdle = false
+      setTimeout(this.checkUserInteraction, 4000)
+    },
+    checkUserInteraction() {
+      if (!this.tabsWereChecked) {
+        this.setTabsClosed()
+      }
+    },
+    userInteraction() {
+      this.tabsWereChecked = true
+    },
+    setTabsClosed() {
+      this.$store.commit('setConfigTabsOpen', false)
+    }
+  }
 }
 </script>
 
 <style lang="scss">
+.config-tabs {
+  filter: brightness(0.3);
+  transition: all 10s ease;
+
+  &:hover {
+    filter: brightness(1);
+    transition: all 0.2s ease;
+  }
+
+  &.start {
+    filter: brightness(1) !important;
+  }
+}
+
 .v-snack {
   bottom: 25px;
   right: 43px;

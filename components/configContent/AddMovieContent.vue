@@ -61,7 +61,7 @@ export default {
       streamingPlatforms: [],
       ratingPlatforms: [],
       disabledBtn: false,
-      tmdbLanguage: 'de',
+      tmdbLanguage: 'en-Us',
       languageItems: ['Deutsch', 'Englisch']
     }
   },
@@ -97,7 +97,7 @@ export default {
                   : this.movieName,
               videoUrl: this.videoUrl,
               language:
-                this.videoLanguage !== '' ? this.videoLanguage : 'Deutsch',
+                this.videoLanguage !== '' ? this.videoLanguage : 'Englisch',
               releaseDate: movieInfo.release_date,
               tmdb_id: movieInfo.id,
               spoilerTimeStamp: this.minutesToSeconds(this.spoilerTimeStamp),

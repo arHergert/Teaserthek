@@ -1,5 +1,8 @@
 <template>
   <v-app>
+    <div class="resize-activator" @click="closeTabsWindow()">
+      <v-icon>mdi-menu-right</v-icon>
+    </div>
     <v-tabs
       fixed-tabs
       dark
@@ -65,12 +68,39 @@ export default {
     return {
       tabs: null
     }
+  },
+  methods: {
+    closeTabsWindow() {
+      this.$store.commit('setConfigTabsOpen', false)
+    }
   }
 }
 </script>
 
 <style lang="scss">
 $cta-color: #2e9663;
+
+.resize-activator {
+  height: 100%;
+  width: 35px;
+  z-index: 1;
+  opacity: 0;
+  background-color: #192125;
+  position: absolute;
+  display: flex;
+  cursor: pointer;
+
+  &:hover {
+    transition: opacity 0.1s cubic-bezier(0, 0, 0.1, 0.1);
+    opacity: 0.5;
+  }
+
+  .v-icon {
+    margin: auto -5px;
+    font-size: 3rem;
+    color: white;
+  }
+}
 
 .filter-tab {
   padding: 2em 2.5em;

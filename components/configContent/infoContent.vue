@@ -368,7 +368,7 @@ export default {
 
 .v-expansion-panel-content {
   overflow-y: scroll;
-  height: 350px;
+  max-height: 350px;
 }
 
 .backdrop {
@@ -406,8 +406,8 @@ export default {
   .brand {
     background-color: #f5c518;
     border-radius: 3px;
-    padding: 6px 10px;
-    color: black;
+    padding: 16px 6px;
+    color: #1b1b1b;
     font-family: 'Impact', 'Arial Black', 'Franklin Gothic Medium', sans-serif;
   }
 
