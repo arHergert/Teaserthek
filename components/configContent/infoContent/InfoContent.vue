@@ -352,6 +352,7 @@ export default {
   .actor-name::before {
     content: '\2022';
     padding: 5px;
+    opacity: 0.6;
   }
 }
 
@@ -390,6 +391,8 @@ export default {
   float: right;
   margin: 0 10px;
   min-height: 220px;
+  min-width: 140px;
+
   .v-image {
     border-radius: 3px;
   }

@@ -64,5 +64,6 @@ export default {
     TMDB_API_KEY: process.env.TMDB_API_KEY,
     LETTERBOXD_URL: 'https://letterboxd.com/film/',
     IMDB_URL: 'https://www.imdb.com/title/'
-  }
+  },
+  target: 'static'
 }

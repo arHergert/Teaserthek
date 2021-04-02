@@ -57,7 +57,7 @@
 <script>
 import AddMovieContent from '~/components/configContent/AddMovieContent'
 import FilterContent from '~/components/configContent/FilterContent'
-import InfoContent from '~/components/configContent/InfoContent'
+import InfoContent from '~/components/configContent/infoContent/InfoContent'
 import HistoryContent from '~/components/configContent/HistoryContent'
 export default {
   FilterContent,
@@ -79,6 +79,12 @@ export default {
 
 <style lang="scss">
 $cta-color: #2e9663;
+
+.v-tab {
+  .v-icon {
+    padding: 10% 35%;
+  }
+}
 
 .resize-activator {
   height: 100%;
