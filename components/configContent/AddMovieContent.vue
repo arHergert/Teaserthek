@@ -72,7 +72,6 @@ export default {
         this.tmdbLanguage = this.videoLanguage === 'Englisch' ? 'en-Us' : 'de'
         let movieInfo = null
         movieInfo = await this.getMovieByName()
-        console.log('Movie Lengths', movieInfo !== null)
         if (this.videoUrl === '' && movieInfo !== null) {
           this.videoUrl = await this.getYoutubeId(movieInfo.id)
 

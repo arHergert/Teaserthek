@@ -51,13 +51,6 @@ export default {
     baseUrl: 'http://localhost:8000/api'
   },
 
-  privateRuntimeConfig: {
-    axios: {
-      baseURL: process.env.BASE_URL,
-      proxy: true
-    }
-  },
-
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
   server: {
@@ -68,17 +61,6 @@ export default {
     TMDB_SEARCH_URL: 'https://api.themoviedb.org/3/',
     TMDB_API_KEY: process.env.TMDB_API_KEY,
     LETTERBOXD_URL: 'https://letterboxd.com/film/',
-    IMDB_URL: 'https://www.imdb.com/title/',
-    axios: {
-      browserBaseURL: process.env.BROWSER_BASE_URL,
-      proxy: true
-    }
-  },
-  target: 'static',
-  router: {
-    base: '/Teaserthek/'
-  },
-  proxy: {
-    '/api/': 'https://arhergert.github.io'
+    IMDB_URL: 'https://www.imdb.com/title/'
   }
 }
