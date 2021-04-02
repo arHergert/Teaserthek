@@ -75,6 +75,9 @@ export default {
     }
   },
   target: 'static',
+  router: {
+    base: '/Teaserthek/'
+  },
   proxy: {
     '/api/': 'https://arhergert.github.io'
   }
