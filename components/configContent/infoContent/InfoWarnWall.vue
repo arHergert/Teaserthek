@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="info-warn"></div>
+    <div class="info-warn">Test</div>
   </v-app>
 </template>
 
