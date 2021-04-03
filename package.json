@@ -15,7 +15,6 @@
     "@nuxtjs/axios": "^5.13.1",
     "core-js": "^3.8.3",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.11.15",
     "nuxt": "^2.14.12",
     "vue-youtube": "^1.4.0",
     "vuetify": "^2.4.3"
@@ -31,7 +30,6 @@
     "eslint-plugin-nuxt": "^1.0.0",
     "eslint-plugin-prettier": "^3.3.1",
     "fibers": "^5.0.0",
-    "morgan": "^1.10.0",
     "prettier": "^2.2.1",
     "push-dir": "^0.4.1",
     "sass": "^1.32.6",

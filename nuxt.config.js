@@ -21,13 +21,6 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [],
 
-  /*
-   ** Server Middleware
-   */
-  serverMiddleware: {
-    '/api': '~/api'
-  },
-
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: ['~plugins/vuetify.js', '~plugins/youtube.js'],
 
@@ -48,13 +41,17 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseUrl: 'http://localhost:8000/api'
+    baseUrl: 'https://ibisapi.herokuapp.com/api/movies/'
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
   server: {
-    port: 8000
+    port: process.env.PORT || 8000
+  },
+  target: 'static',
+  router: {
+    base: '/Teaserthek/'
   },
 
   publicRuntimeConfig: {
