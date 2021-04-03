@@ -192,7 +192,7 @@ export default {
 #video-controls {
   position: absolute;
   bottom: 225px;
-  left: 30%;
+  left: 29%;
   right: 0;
   background: rgba(23, 23, 23);
   padding: 8px 10px;
@@ -235,7 +235,7 @@ $engraved-text-color: #131d23;
 .resize-activator {
   height: 100%;
   width: 50px;
-  z-index: 1;
+  z-index: 3;
   right: 0;
   opacity: 0;
   background-color: #263238;

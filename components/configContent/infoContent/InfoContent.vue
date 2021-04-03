@@ -1,5 +1,6 @@
 <template>
   <v-container class="blue-grey darken-4 white--text filter-tab">
+    <InfoWarnWall />
     <div class="tab-article">
       <div class="movie-info">
         <div
@@ -173,7 +174,9 @@
 </template>
 
 <script>
+import InfoWarnWall from '~/components/configContent/infoContent/InfoWarnWall'
 export default {
+  InfoWarnWall,
   data() {
     return {
       movieResult: null,
@@ -203,6 +206,7 @@ export default {
         writer: null,
         actors: []
       }
+      this.$store.commit('setTempInfoWarn', true)
 
       // Call all API methods for current video
       this.getInfo()
@@ -427,6 +431,7 @@ export default {
     line-height: 1;
     content: '\2022';
     padding: 10px;
+    opacity: 0.6;
   }
 }
 </style>

@@ -89,7 +89,7 @@ $cta-color: #2e9663;
 .resize-activator {
   height: 100%;
   width: 35px;
-  z-index: 1;
+  z-index: 3;
   opacity: 0;
   background-color: #192125;
   position: absolute;

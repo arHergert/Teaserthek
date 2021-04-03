@@ -18,7 +18,10 @@ export const state = () => ({
     autoplay: true,
     currentIndex: 0,
     fullscreen: false,
-    configTabsOpen: true
+    configTabsOpen: true,
+    showInfoWarn: false,
+    globalnfoWarn: false,
+    tempInfoWarn: true
   },
   fetchedVideosEmpty: false
 })
@@ -59,6 +62,12 @@ export const mutations = {
   },
   setConfigTabsOpen(state, data) {
     state.videoControls.configTabsOpen = data
+  },
+  setGlobalInfoWarn(state, data) {
+    state.videoControls.globalnfoWarn = data
+  },
+  setTempInfoWarn(state, data) {
+    state.videoControls.tempInfoWarn = data
   },
   setFetchedVideosEmpty(state, data) {
     state.fetchedVideosEmpty = data

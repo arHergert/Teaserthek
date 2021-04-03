@@ -12,7 +12,7 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'Auf Teaserthek kannst du von zu Hause aus die neusten Trailer schauen, ohne zu wissen, was sich dahinter verbirgt. Genau so wie füher im Kino!'
+          'Erlebe den ersten Eindruck eines unbekannten Films wie im Kino. Schaue Trailer für neue oder bereits erschienene Filme!'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
