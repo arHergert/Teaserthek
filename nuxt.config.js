@@ -15,7 +15,7 @@ export default {
           'Erlebe den ersten Eindruck eines unbekannten Films wie im Kino. Schaue Trailer für neue oder bereits erschienene Filme!'
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico?' }]
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
