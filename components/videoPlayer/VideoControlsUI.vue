@@ -22,7 +22,13 @@
     <div class="thumbs-section vertical-center hover-highlight">
       <v-tooltip top open-delay="1000">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" class="thumbs" dark v-on="on"
+          <v-icon
+            v-bind="attrs"
+            class="thumbs"
+            :class="getVideoRating(currentVideo.tmdb_id) == 1 ? 'liked' : ''"
+            dark
+            @click="setRating(currentVideo.tmdb_id, 1)"
+            v-on="on"
             >mdi-thumb-up</v-icon
           >
         </template>
@@ -30,7 +36,13 @@
       </v-tooltip>
       <v-tooltip top open-delay="1000">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" class="thumbs" dark v-on="on"
+          <v-icon
+            v-bind="attrs"
+            class="thumbs"
+            :class="getVideoRating(currentVideo.tmdb_id) == 0 ? 'disliked' : ''"
+            dark
+            @click="setRating(currentVideo.tmdb_id, 0)"
+            v-on="on"
             >mdi-thumb-down</v-icon
           >
         </template>
@@ -95,6 +107,11 @@ export default {
     },
     videoPlaylist() {
       return this.$store.state.videoPlaylist
+    },
+    currentVideo() {
+      return this.$store.state.videoPlaylist[
+        this.$store.state.videoControls.currentIndex
+      ]
     }
   },
   mounted() {
@@ -125,6 +142,29 @@ export default {
       if (this.currentVideoIndex > 0) {
         this.$store.commit('setCurrentVideoIndex', this.currentVideoIndex - 1)
       }
+    },
+    getVideoRating(videoTmdbId) {
+      let finalRating = -1
+      this.$store.state.watchedTrailers.forEach(arrayVideo => {
+        if (arrayVideo.tmdb_id === videoTmdbId) {
+          finalRating = arrayVideo.rating
+        }
+      })
+      return finalRating
+    },
+    /**
+     * -1: Unrated
+     * 0: Disliked
+     * 1: Liked
+     */
+    setRating(tmdbId, rating) {
+      this.$store.commit('setRating', { tmdbId, rating })
+
+      // Update history in localstorage with rating
+      window.localStorage.setItem(
+        'watchedTrailers',
+        JSON.stringify(this.$store.state.watchedTrailers)
+      )
     }
   }
 }
@@ -168,6 +208,24 @@ export default {
 
     span {
       white-space: nowrap;
+    }
+  }
+
+  .thumbs-section {
+    .v-icon {
+      &.liked {
+        color: rgba(46, 150, 99, 0.5) !important;
+        &:hover {
+          color: rgba(46, 150, 99, 1) !important;
+        }
+      }
+
+      &.disliked {
+        color: rgba(150, 46, 46, 0.5) !important;
+        &:hover {
+          color: rgb(150, 46, 46) !important;
+        }
+      }
     }
   }
 

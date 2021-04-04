@@ -45,8 +45,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$engraved-text-shadow: 0px 1px 0px rgb(187 187 187 / 10%), 0px -1px 0px black;
-
 .info-warn {
   position: absolute;
   display: flex;
@@ -60,7 +58,7 @@ $engraved-text-shadow: 0px 1px 0px rgb(187 187 187 / 10%), 0px -1px 0px black;
 
   .request-window {
     margin: auto;
-    height: 490px;
+    height: fit-content;
     width: 80%;
     border-radius: 5px;
     padding: 17px 32px;
@@ -75,7 +73,6 @@ $engraved-text-shadow: 0px 1px 0px rgb(187 187 187 / 10%), 0px -1px 0px black;
   .v-icon {
     color: #cfd8dc;
     font-size: 8rem;
-    text-shadow: $engraved-text-shadow;
   }
 
   .v-btn {

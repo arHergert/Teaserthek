@@ -59,7 +59,7 @@ export default {
     },
     setTabsIdle() {
       this.startIdle = false
-      setTimeout(this.checkUserInteraction, 4000)
+      setTimeout(this.checkUserInteraction, 5000)
     },
     checkUserInteraction() {
       if (!this.tabsWereChecked) {
@@ -79,7 +79,7 @@ export default {
 <style lang="scss">
 .config-tabs {
   filter: brightness(0.3);
-  transition: all 10s ease;
+  transition: all 2s ease;
 
   &:hover {
     filter: brightness(1);

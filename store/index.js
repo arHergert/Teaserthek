@@ -30,6 +30,35 @@ export const mutations = {
   setWatchedTrailers(state, watchedTrailers) {
     state.watchedTrailers = watchedTrailers
   },
+  addVideoToWatchedTrailers(state, video) {
+    if (
+      state.watchedTrailers.some(
+        arrayVideo => arrayVideo.tmdb_id === video.tmdb_id
+      )
+    ) {
+      state.watchedTrailers.forEach((arrayVideo, index) => {
+        if (arrayVideo.tmdb_id === video.tmdb_id) {
+          const tempVideo = state.watchedTrailers[index]
+          state.watchedTrailers.splice(index, 1)
+          state.watchedTrailers.unshift(tempVideo)
+        }
+      })
+    } else {
+      state.watchedTrailers.unshift(video)
+    }
+  },
+  setRating(state, { tmdbId, rating }) {
+    state.watchedTrailers.forEach(arrayVideo => {
+      if (arrayVideo.tmdb_id === tmdbId) {
+        // If Thumbs button was already rated, set unrated
+        if (arrayVideo.rating === rating) {
+          arrayVideo.rating = -1
+        } else {
+          arrayVideo.rating = rating
+        }
+      }
+    })
+  },
   setVideoPlaylist(state, playlist) {
     state.videoPlaylist = playlist
   },

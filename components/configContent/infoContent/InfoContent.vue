@@ -1,5 +1,8 @@
 <template>
-  <v-container class="blue-grey darken-4 white--text filter-tab">
+  <v-container
+    class="blue-grey darken-4 white--text filter-tab"
+    :class="!globalInfoWarn && tempInfoWarn ? 'full-window' : ''"
+  >
     <InfoWarnWall />
     <div class="tab-article">
       <div class="movie-info">
@@ -14,7 +17,7 @@
           type="paragraph, sentences, paragraph, image"
         ></v-skeleton-loader>
         <p v-if="movieResult !== null" class="text-h4 font-weight-bold">
-          {{ movieResult.title }}
+          {{ currentVideo.name }}
         </p>
         <div class="poster">
           <v-img
@@ -193,6 +196,12 @@ export default {
       return this.$store.state.videoPlaylist[
         this.$store.state.videoControls.currentIndex
       ]
+    },
+    globalInfoWarn() {
+      return this.$store.state.videoControls.globalnfoWarn
+    },
+    tempInfoWarn() {
+      return this.$store.state.videoControls.tempInfoWarn
     }
   },
   watch: {
@@ -328,6 +337,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.full-window {
+  height: 85vh;
+}
+
 .v-chip.v-size--default {
   height: 2rem;
   background-color: rgba(0, 0, 0, 0.25) !important;

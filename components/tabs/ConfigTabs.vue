@@ -51,6 +51,7 @@
       <v-tab-item><HistoryContent /></v-tab-item>
       <v-tab-item><AddMovieContent /></v-tab-item>
     </v-tabs>
+    <AboutContent />
   </v-app>
 </template>
 
@@ -59,11 +60,13 @@ import AddMovieContent from '~/components/configContent/AddMovieContent'
 import FilterContent from '~/components/configContent/FilterContent'
 import InfoContent from '~/components/configContent/infoContent/InfoContent'
 import HistoryContent from '~/components/configContent/HistoryContent'
+import AboutContent from '~/components/configContent/AboutContent'
 export default {
   FilterContent,
   AddMovieContent,
   InfoContent,
   HistoryContent,
+  AboutContent,
   data() {
     return {
       tabs: null

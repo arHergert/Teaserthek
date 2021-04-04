@@ -6,8 +6,39 @@
         : 'fullscreen'
     "
   >
+    <v-app v-if="!dsgvoConfirmed" class="empty-data">
+      <div v-if="!tabsOpen" class="resize-activator" @click="openTabsWindow()">
+        <v-icon>mdi-menu-left</v-icon>
+      </div>
+      <div class="empty-data-status">
+        <p><v-icon>mdi-youtube</v-icon></p>
+        <p class="yt-text">
+          Mit dem Laden der Videos auf dieser Seite akzeptierst Du die
+          <a href="https://policies.google.com/privacy" target="_blank"
+            >Datenschutzerklärung</a
+          >
+          von YouTube.
+        </p>
+        <v-btn class="primary-btn" x-large @click="confirmDSGVO()">
+          Nur dieses mal akzeptieren
+        </v-btn>
+        <v-btn
+          class=""
+          color="blue-grey lighten-5"
+          outlined
+          x-large
+          @click="confirmDSGVOForever()"
+        >
+          Immer akzeptieren
+        </v-btn>
+      </div>
+    </v-app>
     <v-app
-      v-if="videoPlaylist.length > 0 && fetchedVideosEmpty == false"
+      v-if="
+        videoPlaylist.length > 0 &&
+        fetchedVideosEmpty == false &&
+        dsgvoConfirmed
+      "
       class="player"
     >
       <div v-if="!tabsOpen" class="resize-activator" @click="openTabsWindow()">
@@ -31,7 +62,11 @@
       ></youtube>
     </v-app>
     <v-app
-      v-else-if="videoPlaylist.length === 0 && fetchedVideosEmpty == false"
+      v-else-if="
+        videoPlaylist.length === 0 &&
+        fetchedVideosEmpty == false &&
+        dsgvoConfirmed
+      "
       class="player"
     >
       <v-progress-circular
@@ -42,7 +77,17 @@
         class="progress"
       ></v-progress-circular>
     </v-app>
-    <v-app v-else class="empty-data">
+    <v-app
+      v-else-if="
+        videoPlaylist.length === 0 &&
+        fetchedVideosEmpty == true &&
+        dsgvoConfirmed
+      "
+      class="empty-data"
+    >
+      <div v-if="!tabsOpen" class="resize-activator" @click="openTabsWindow()">
+        <v-icon>mdi-menu-left</v-icon>
+      </div>
       <div class="empty-data-status">
         <p><v-icon>mdi-filmstrip-off</v-icon></p>
         <p>Leider wurden keine Trailer gefunden.</p>
@@ -59,6 +104,7 @@ export default {
   data() {
     return {
       videoPaused: false,
+      dsgvoConfirmed: false,
       playerVars: {
         autoplay: 1,
         controls: 1,
@@ -85,9 +131,23 @@ export default {
     },
     tabsOpen() {
       return this.$store.state.videoControls.configTabsOpen
+    },
+    currentVideo() {
+      return this.$store.state.videoPlaylist[
+        this.$store.state.videoControls.currentIndex
+      ]
     }
   },
   async beforeMount() {
+    // Check localstorage for DSGVO Confirmation
+    if (
+      window.localStorage &&
+      window.localStorage.getItem('embeddedYoutubeConfirmed') !== null
+    ) {
+      this.dsgvoConfirmed = JSON.parse(
+        window.localStorage.getItem('embeddedYoutubeConfirmed')
+      )
+    }
     // Check localstorage and get filter
     if (
       window.localStorage &&
@@ -99,9 +159,29 @@ export default {
       )
     }
 
+    // Get History
+    if (
+      window.localStorage &&
+      window.localStorage.getItem('watchedTrailers') !== null
+    ) {
+      this.$store.commit(
+        'setWatchedTrailers',
+        JSON.parse(window.localStorage.getItem('watchedTrailers'))
+      )
+    }
+
     await this.fetchFilteredTrailerPlaylist(25)
   },
   methods: {
+    confirmDSGVO() {
+      this.dsgvoConfirmed = true
+    },
+    confirmDSGVOForever() {
+      this.confirmDSGVO()
+
+      // Set decision to localstorage
+      window.localStorage.setItem('embeddedYoutubeConfirmed', true)
+    },
     playerReady() {
       this.player.playVideo()
     },
@@ -109,6 +189,14 @@ export default {
       setTimeout(() => {
         this.videoPaused = false
       }, 50)
+
+      this.addVideoToHistory()
+
+      // Add history to localstorage
+      window.localStorage.setItem(
+        'watchedTrailers',
+        JSON.stringify(this.$store.state.watchedTrailers)
+      )
     },
     ended() {
       if (this.currentVideoIndex === this.videoPlaylist.length - 1) {
@@ -149,6 +237,15 @@ export default {
     },
     openTabsWindow() {
       this.$store.commit('setConfigTabsOpen', true)
+    },
+    addVideoToHistory() {
+      // Add video to store
+      this.$store.commit('addVideoToWatchedTrailers', {
+        name: this.currentVideo.name,
+        tmdb_id: this.currentVideo.tmdb_id,
+        videoUrl: this.currentVideo.videoUrl,
+        rating: -1
+      })
     }
   }
 }
@@ -229,6 +326,25 @@ $engraved-text-color: #131d23;
     color: $engraved-text-color;
     font-size: 15rem;
     text-shadow: $engraved-text-shadow;
+  }
+
+  .yt-text {
+    padding: 0 70px;
+  }
+
+  .v-btn {
+    margin-top: 2em !important;
+    color: #cfd8dc;
+  }
+
+  .primary-btn {
+    background: linear-gradient(266.76deg, #46d254 1%, #24744e 99.45%);
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #307855;
   }
 }
 
