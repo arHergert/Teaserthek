@@ -6,7 +6,7 @@
         : 'fullscreen'
     "
   >
-    <v-app v-if="!dsgvoConfirmed" class="empty-data">
+    <v-app v-if="dsgvoConfirmed === false" class="empty-data">
       <div v-if="!tabsOpen" class="resize-activator" @click="openTabsWindow()">
         <v-icon>mdi-menu-left</v-icon>
       </div>
@@ -139,15 +139,6 @@ export default {
     }
   },
   async beforeMount() {
-    // Check localstorage for DSGVO Confirmation
-    if (
-      window.localStorage &&
-      window.localStorage.getItem('embeddedYoutubeConfirmed') !== null
-    ) {
-      this.dsgvoConfirmed = JSON.parse(
-        window.localStorage.getItem('embeddedYoutubeConfirmed')
-      )
-    }
     // Check localstorage and get filter
     if (
       window.localStorage &&
@@ -171,6 +162,17 @@ export default {
     }
 
     await this.fetchFilteredTrailerPlaylist(25)
+  },
+  mounted() {
+    // Check localstorage for DSGVO Confirmation
+    if (
+      window.localStorage &&
+      window.localStorage.getItem('embeddedYoutubeConfirmed') !== null
+    ) {
+      this.dsgvoConfirmed = JSON.parse(
+        window.localStorage.getItem('embeddedYoutubeConfirmed')
+      )
+    }
   },
   methods: {
     confirmDSGVO() {
