@@ -2,7 +2,7 @@
 
 ## Beschreibung
 
-Auf Teaserthek kannst du für neue oder bereits erschienene Filme zufällige Trailer schauen. Lass dir einen ersten Eindruck eines Films vermitteln, ohne dich durch Titel, Beschreibung, Thumbnails oder sonstigen zu spoilern. 
+Auf Teaserthek kannst du für neue oder bereits erschienene Filme zufällige Trailer schauen. Lass dir einen ersten Eindruck eines Films vermitteln, ohne dich durch Titel, Beschreibung, Thumbnails oder sonstigen spoilern zu lassen. 
 
 
 ## Build Setup
